@@ -57,6 +57,8 @@ export interface Service {
 
 ## Usage
 
+### ESM
+
 ```ts
 import {
   register,
@@ -72,6 +74,35 @@ const database: Service = {
 };
 
 const api: Service = {
+  name: "api",
+  dependencies: ["database"],
+  loader: async () => {
+    // start api layer
+  },
+};
+
+register(database);
+register(api);
+
+await loadServices([api, database]);
+```
+
+### CommonJS
+
+```ts
+const {
+  register,
+  loadServices,
+} = require("service");
+
+const database = {
+  name: "database",
+  loader: async () => {
+    // initialize database connections
+  },
+};
+
+const api = {
   name: "api",
   dependencies: ["database"],
   loader: async () => {
