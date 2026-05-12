@@ -2,7 +2,6 @@
 	"name": "service-loader",
 	"version": "1.0.0",
 	"description": "",
-	"type": "module",
 	"main": "./dist/cjs/service.js",
 	"module": "./dist/esm/service.js",
 	"types": "./dist/esm/service.d.ts",
@@ -14,8 +13,8 @@
 		}
 	},
 	"scripts": {
-		"build:esm": "tsgo -p tsconfig.esm.json",
-		"build:cjs": "tsgo -p tsconfig.cjs.json",
+		"build:esm": "tsc",
+		"build:cjs": "npx babel dist/esm --out-dir dist/cjs --plugins @babel/plugin-transform-modules-commonjs --copy-files",
 		"build": "npm run build:esm && npm run build:cjs"
 	},
 	"keywords": [
@@ -29,5 +28,10 @@
 	"dependencies": {
 		"@types/node": "^25.6.2",
 		"typescript": "^6.0.3"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.28.6",
+		"@babel/core": "^7.29.0",
+		"@babel/plugin-transform-modules-commonjs": "^7.28.6"
 	}
 }

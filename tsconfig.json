@@ -3,10 +3,10 @@
 	"compilerOptions": {
 		// File Layout
 		"rootDir": "./src",
-		"outDir": "./dist",
+		"outDir": "./dist/esm",
 
 		// Environment Settings
-		"module": "nodenext",
+		"module": "esnext",
 		"target": "esnext",
 		"lib": ["esnext"],
 		"types": ["node"],
