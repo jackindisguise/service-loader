@@ -1,4 +1,4 @@
-# service
+# service-loader
 
 A small TypeScript library for registering services, resolving their dependency order, and loading them exactly once.
 
