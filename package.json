@@ -1,0 +1,33 @@
+{
+	"name": "service",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "./dist/cjs/service.js",
+	"module": "./dist/esm/service.js",
+	"types": "./dist/esm/service.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/esm/service.d.ts",
+			"import": "./dist/esm/service.js",
+			"require": "./dist/cjs/service.js"
+		}
+	},
+	"scripts": {
+		"build:esm": "tsgo -p tsconfig.esm.json",
+		"build:cjs": "tsgo -p tsconfig.cjs.json",
+		"build": "npm run build:esm && npm run build:cjs"
+	},
+	"keywords": [
+		"service",
+		"service loader",
+		"package",
+		"package loader"
+	],
+	"author": "jackindisguise",
+	"license": "ISC",
+	"dependencies": {
+		"@types/node": "^25.6.2",
+		"typescript": "^6.0.3"
+	}
+}
