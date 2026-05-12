@@ -7,7 +7,7 @@ A small TypeScript library for registering services, resolving their dependency 
 - Register services by name
 - Track registered and loaded services
 - Load a service by object or by name
-- Load a dependency graph in topological order
+- Load all registered services in topological order
 - Detect dependency cycles before loading begins
 - Build for both ESM and CommonJS consumers
 
@@ -19,7 +19,7 @@ npm install
 
 ## Build
 
-This package builds TypeScript into both ESM and CommonJS outputs:
+This package first compiles the TypeScript source to ESM, then uses Babel to rewrite that output into CommonJS:
 
 ```bash
 npm run build
@@ -38,7 +38,7 @@ The package exports the following types and functions:
 - `deregister(service)`
 - `loadByService(service)`
 - `loadByName(name)`
-- `loadServices(services)`
+- `load()`
 - `REGISTERED_SERVICES`
 - `REGISTERED_SERVICE_NAMES`
 - `LOADED_SERVICES`
@@ -62,9 +62,9 @@ export interface Service {
 ```ts
 import {
   register,
-  loadServices,
+  load,
   type Service,
-} from "service";
+} from "service-loader";
 
 const database: Service = {
   name: "database",
@@ -84,7 +84,7 @@ const api: Service = {
 register(database);
 register(api);
 
-await loadServices([api, database]);
+await load();
 ```
 
 ### CommonJS
@@ -92,8 +92,8 @@ await loadServices([api, database]);
 ```ts
 const {
   register,
-  loadServices,
-} = require("service");
+  load,
+} = require("service-loader");
 
 const database = {
   name: "database",
@@ -113,20 +113,23 @@ const api = {
 register(database);
 register(api);
 
-await loadServices([api, database]);
+(async () => {
+  await load();
+})();
 ```
 
 ## Behavior
 
 - `register()` rejects duplicate service names and duplicate service objects.
 - `loadByService()` and `loadByName()` are idempotent after a service has loaded.
-- `loadServices()` topologically sorts the provided services before loading them.
+- `load()` topologically sorts all registered services before loading them.
 - Cycles in the dependency graph throw an error before loading starts.
 
 ## Project Structure
 
 - `src/service.ts` contains the registry and loader implementation.
-- `tsconfig.esm.json` and `tsconfig.cjs.json` define the two build targets.
+- `tsconfig.esm.json` controls the ESM TypeScript emit.
+- `package.json` contains the Babel step that produces CommonJS output.
 
 ## License
 

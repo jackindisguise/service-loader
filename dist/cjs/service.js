@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.REGISTERED_SERVICE_NAMES = exports.REGISTERED_SERVICES = exports.LOADED_SERVICE_NAMES = exports.LOADED_SERVICES = void 0;
 exports.deregister = deregister;
+exports.load = load;
 exports.loadByName = loadByName;
 exports.loadByService = loadByService;
-exports.loadServices = loadServices;
 exports.register = register;
 var _strict = _interopRequireDefault(require("node:assert/strict"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -132,7 +132,7 @@ async function loadByName(service) {
  * @param services
  * @returns
  */
-function generateDependencyGraph(services) {
+function generateDependencyGraph(...services) {
   const map = new Map();
   for (let service of services) map.set(service.name, service.dependencies || []);
   return map;
@@ -142,8 +142,8 @@ function generateDependencyGraph(services) {
  * @param services
  * @returns
  */
-function topoSort(services) {
-  const graph = generateDependencyGraph(services);
+function topoSort(...services) {
+  const graph = generateDependencyGraph(...services);
   const loaded = new Set(); // already loaded
   const stack = new Set(); // track dependency tree
   const result = []; // dependency-first service name array
@@ -164,12 +164,10 @@ function topoSort(services) {
   return result;
 }
 /**
- * Accepts an array of Services to load.
- * All of the Services are topo-sorted before loading.
- * @param services
+ * Loads all registered services.
  */
-async function loadServices(services) {
-  const sorted = topoSort(services);
+async function load() {
+  const sorted = topoSort(...REGISTERED_SERVICES);
   // logger.debug({ package: "service" }, `toposorted service graph: ${sorted.map((s) => `@${s}`).join(", ")}`);
   for (let service of sorted) {
     await loadByName(service);

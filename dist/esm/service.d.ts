@@ -53,9 +53,7 @@ export declare function loadByService(service: Service): Promise<void>;
  */
 export declare function loadByName(service: ServiceName): Promise<void>;
 /**
- * Accepts an array of Services to load.
- * All of the Services are topo-sorted before loading.
- * @param services
+ * Loads all registered services.
  */
-export declare function loadServices(services: Service[]): Promise<void>;
+export declare function load(): Promise<void>;
 //# sourceMappingURL=service.d.ts.map

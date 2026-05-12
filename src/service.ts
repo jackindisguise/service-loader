@@ -180,7 +180,7 @@ export async function loadByName(service: ServiceName) {
  * @returns
  */
 function generateDependencyGraph(
-	services: Service[],
+	...services: Service[]
 ): Map<ServiceName, ServiceName[]> {
 	const map = new Map<ServiceName, ServiceName[]>();
 	for (let service of services)
@@ -193,8 +193,8 @@ function generateDependencyGraph(
  * @param services
  * @returns
  */
-function topoSort(services: Service[]): ServiceName[] {
-	const graph = generateDependencyGraph(services);
+function topoSort(...services: Service[]): ServiceName[] {
+	const graph = generateDependencyGraph(...services);
 	const loaded: Set<ServiceName> = new Set(); // already loaded
 	const stack: Set<ServiceName> = new Set(); // track dependency tree
 	const result: ServiceName[] = []; // dependency-first service name array
@@ -222,12 +222,10 @@ function topoSort(services: Service[]): ServiceName[] {
 }
 
 /**
- * Accepts an array of Services to load.
- * All of the Services are topo-sorted before loading.
- * @param services
+ * Loads all registered services.
  */
-export async function loadServices(services: Service[]) {
-	const sorted = topoSort(services);
+export async function load() {
+	const sorted = topoSort(...REGISTERED_SERVICES);
 	// logger.debug({ package: "service" }, `toposorted service graph: ${sorted.map((s) => `@${s}`).join(", ")}`);
 	for (let service of sorted) {
 		await loadByName(service);
