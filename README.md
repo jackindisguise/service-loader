@@ -1,6 +1,14 @@
 # service-loader
 
-A small TypeScript library for registering services, resolving their dependency order, and loading them exactly once.
+A small TypeScript library for defining services up front, registering them as a group, and loading them in dependency order.
+
+## Preferred Workflow
+
+1. Define all services.
+2. Register all services.
+3. Load all services.
+
+That is the intended usage pattern for this package. You declare the full service graph first, then register each service, then call `load()` once to initialize everything in dependency order.
 
 ## Features
 
@@ -57,44 +65,12 @@ export interface Service {
 
 ## Usage
 
-### ESM
+### ESM JavaScript
 
-```ts
-import {
-  register,
-  load,
-  type Service,
-} from "service-loader";
+```js
+import { register, load } from "service-loader";
 
-const database: Service = {
-  name: "database",
-  loader: async () => {
-    // initialize database connections
-  },
-};
-
-const api: Service = {
-  name: "api",
-  dependencies: ["database"],
-  loader: async () => {
-    // start api layer
-  },
-};
-
-register(database);
-register(api);
-
-await load();
-```
-
-### CommonJS
-
-```ts
-const {
-  register,
-  load,
-} = require("service-loader");
-
+// 1. Define all services
 const database = {
   name: "database",
   loader: async () => {
@@ -110,9 +86,46 @@ const api = {
   },
 };
 
-register(database);
-register(api);
+const services = [database, api];
 
+// 2. Register all services
+for (const service of services) {
+  register(service);
+}
+
+// 3. Load all services
+await load();
+```
+
+### CommonJS
+
+```js
+const { register, load } = require("service-loader");
+
+// 1. Define all services
+const database = {
+  name: "database",
+  loader: async () => {
+    // initialize database connections
+  },
+};
+
+const api = {
+  name: "api",
+  dependencies: ["database"],
+  loader: async () => {
+    // start api layer
+  },
+};
+
+const services = [database, api];
+
+// 2. Register all services
+for (const service of services) {
+  register(service);
+}
+
+// 3. Load all services
 (async () => {
   await load();
 })();
