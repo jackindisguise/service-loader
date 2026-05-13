@@ -27,7 +27,7 @@ export interface Service {
 const _REGISTERED_SERVICES: Service[] = [];
 
 /**
- * A readonly array of all registered Services.
+ * Expose a readonly array of all registered Services.
  */
 export const REGISTERED_SERVICES: ReadonlyArray<Service> = _REGISTERED_SERVICES;
 
@@ -40,7 +40,7 @@ const _REGISTERED_SERVICE_NAMES: Map<ServiceName, Service> = new Map<
 >();
 
 /**
- * A readonly map of all registered Service names.
+ * Expose a readonly map of all registered Service names.
  */
 export const REGISTERED_SERVICE_NAMES: ReadonlyMap<ServiceName, Service> =
 	_REGISTERED_SERVICE_NAMES;
@@ -103,7 +103,7 @@ export function deregister(service: Service) {
 const _LOADED_SERVICES: Service[] = [];
 
 /**
- * A readonly array of all loaded Services.
+ * Expose a readonly array of all loaded Services.
  */
 export const LOADED_SERVICES: ReadonlyArray<Service> = _LOADED_SERVICES;
 
