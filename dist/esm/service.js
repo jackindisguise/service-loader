@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
  */
 const _REGISTERED_SERVICES = [];
 /**
- * A readonly array of all registered Services.
+ * Expose a readonly array of all registered Services.
  */
 export const REGISTERED_SERVICES = _REGISTERED_SERVICES;
 /**
@@ -12,7 +12,7 @@ export const REGISTERED_SERVICES = _REGISTERED_SERVICES;
  */
 const _REGISTERED_SERVICE_NAMES = new Map();
 /**
- * A readonly map of all registered Service names.
+ * Expose a readonly map of all registered Service names.
  */
 export const REGISTERED_SERVICE_NAMES = _REGISTERED_SERVICE_NAMES;
 /**
@@ -59,7 +59,7 @@ export function deregister(service) {
  */
 const _LOADED_SERVICES = [];
 /**
- * A readonly array of all loaded Services.
+ * Expose a readonly array of all loaded Services.
  */
 export const LOADED_SERVICES = _LOADED_SERVICES;
 /**

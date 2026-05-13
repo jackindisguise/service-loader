@@ -15,7 +15,8 @@
 	"scripts": {
 		"build:esm": "tsc",
 		"build:cjs": "npx babel dist/esm --out-dir dist/cjs --plugins @babel/plugin-transform-modules-commonjs --copy-files",
-		"build": "npm run build:esm && npm run build:cjs"
+		"build": "npm run build:esm && npm run build:cjs",
+		"test": "npm run build && node --test test/service.test.cjs"
 	},
 	"keywords": [
 		"service",

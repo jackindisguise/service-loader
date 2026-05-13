@@ -16,7 +16,7 @@ function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e
  */
 const _REGISTERED_SERVICES = [];
 /**
- * A readonly array of all registered Services.
+ * Expose a readonly array of all registered Services.
  */
 const REGISTERED_SERVICES = exports.REGISTERED_SERVICES = _REGISTERED_SERVICES;
 /**
@@ -24,7 +24,7 @@ const REGISTERED_SERVICES = exports.REGISTERED_SERVICES = _REGISTERED_SERVICES;
  */
 const _REGISTERED_SERVICE_NAMES = new Map();
 /**
- * A readonly map of all registered Service names.
+ * Expose a readonly map of all registered Service names.
  */
 const REGISTERED_SERVICE_NAMES = exports.REGISTERED_SERVICE_NAMES = _REGISTERED_SERVICE_NAMES;
 /**
@@ -71,7 +71,7 @@ function deregister(service) {
  */
 const _LOADED_SERVICES = [];
 /**
- * A readonly array of all loaded Services.
+ * Expose a readonly array of all loaded Services.
  */
 const LOADED_SERVICES = exports.LOADED_SERVICES = _LOADED_SERVICES;
 /**

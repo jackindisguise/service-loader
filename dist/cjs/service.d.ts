@@ -15,11 +15,11 @@ export interface Service {
     loadTime?: number;
 }
 /**
- * A readonly array of all registered Services.
+ * Expose a readonly array of all registered Services.
  */
 export declare const REGISTERED_SERVICES: ReadonlyArray<Service>;
 /**
- * A readonly map of all registered Service names.
+ * Expose a readonly map of all registered Service names.
  */
 export declare const REGISTERED_SERVICE_NAMES: ReadonlyMap<ServiceName, Service>;
 /**
@@ -33,7 +33,7 @@ export declare function register(service: Service): void;
  */
 export declare function deregister(service: Service): void;
 /**
- * A readonly array of all loaded Services.
+ * Expose a readonly array of all loaded Services.
  */
 export declare const LOADED_SERVICES: ReadonlyArray<Service>;
 /**
