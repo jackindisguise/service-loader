@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/jackindisguise/service-loader/compare/v1.1.0...v1.2.0) (2026-05-20)
+
+
+### Features
+
+* added some tests, changed de/register() ([125a885](https://github.com/jackindisguise/service-loader/commit/125a885ab14b1887e546725c9f0cba8318795208))
+
 ## [1.1.0](https://github.com/jackindisguise/service-loader/compare/v1.0.0...v1.1.0) (2026-05-13)
 
 
