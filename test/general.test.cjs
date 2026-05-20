@@ -11,7 +11,7 @@ const {
 	LOADED_SERVICES,
 	LOADED_SERVICE_NAMES,
 	deregister,
-} = require("../dist/cjs/service.js");
+} = require("../dist/service.js");
 
 let nextId = 0;
 

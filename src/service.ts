@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import sw from "sw";
+import { sw } from "sw";
 //import { logger } from "./pino.js";
 export type ServiceName = string;
 export type ServiceLoader = () => Promise<void>;

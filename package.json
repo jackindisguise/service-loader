@@ -2,13 +2,13 @@
 	"name": "service-loader",
 	"version": "1.2.0",
 	"description": "",
-	"main": "./dist/cjs/service.js",
-	"module": "./dist/esm/service.js",
+	"main": "./dist/service.js",
+	"module": "./dist/service.mjs",
 	"types": "./dist/esm/service.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/esm/service.d.ts",
-			"import": "./dist/esm/service.js",
+			"import": "./dist/esm/service.mjs",
 			"require": "./dist/cjs/service.js"
 		}
 	},
@@ -17,6 +17,7 @@
 		"build:esm": "tsc",
 		"build:cjs": "npx babel dist/esm --out-dir dist/cjs --plugins @babel/plugin-transform-modules-commonjs --copy-files",
 		"build": "npm run build:esm && npm run build:cjs",
+		"bundle": "npx tsup src/service.ts --format esm,cjs --dts",
 		"build:clean": "npm run clean && npm run build",
 		"test:clean": "npm run build:clean && node --test",
 		"test": "node --test"
@@ -29,14 +30,15 @@
 	],
 	"author": "jackindisguise",
 	"license": "ISC",
-	"dependencies": {
-		"@types/node": "^25.6.2",
-		"sw": "github:jackindisguise/sw#v1.1.0",
-		"typescript": "^6.0.3"
-	},
 	"devDependencies": {
 		"@babel/cli": "^7.28.6",
 		"@babel/core": "^7.29.0",
-		"@babel/plugin-transform-modules-commonjs": "^7.28.6"
+		"@babel/plugin-transform-modules-commonjs": "^7.28.6",
+		"@types/node": "^25.9.1",
+		"tsup": "^8.5.1",
+		"typescript": "^6.0.3"
+	},
+	"dependencies": {
+		"sw": "github:jackindisguise/sw"
 	}
 }
