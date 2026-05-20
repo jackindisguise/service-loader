@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/jackindisguise/service-loader/compare/v1.2.0...v1.3.0) (2026-05-20)
+
+
+### Features
+
+* moved to tsup to make life easier? ([783ec1e](https://github.com/jackindisguise/service-loader/commit/783ec1e01875e634b441e4bcbbbdfce3d9320c42))
+
 ## [1.2.0](https://github.com/jackindisguise/service-loader/compare/v1.1.0...v1.2.0) (2026-05-20)
 
 
