@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/jackindisguise/service-loader/compare/v1.3.1...v1.3.2) (2026-05-20)
+
+
+### Bug Fixes
+
+* bad error message ([c965031](https://github.com/jackindisguise/service-loader/commit/c9650313790cf1c1de80fd7d288518b9a86fc628))
+
 ## [1.3.1](https://github.com/jackindisguise/service-loader/compare/v1.3.0...v1.3.1) (2026-05-20)
 
 
