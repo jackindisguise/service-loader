@@ -10,6 +10,7 @@ const {
 	REGISTERED_SERVICE_NAMES,
 	LOADED_SERVICES,
 	LOADED_SERVICE_NAMES,
+	deregister,
 } = require("../dist/cjs/service.js");
 
 let nextId = 0;
@@ -75,8 +76,7 @@ test("load loads dependencies before dependents", async () => {
 	const database = createService(uniqueName("database"), calls);
 	const api = createService(uniqueName("api"), calls, [database.name]);
 
-	register(database);
-	register(api);
+	register(database, api);
 
 	await load();
 
@@ -103,12 +103,7 @@ test("load handles a branched dependency graph in dependency-first order", async
 		api.name,
 	]);
 
-	register(worker);
-	register(api);
-	register(auth);
-	register(database);
-	register(cache);
-	register(metrics);
+	register(worker, api, auth, database, cache, metrics);
 
 	await load();
 
@@ -142,11 +137,7 @@ test("load rejects a complex dependency graph with a cycle", async () => {
 
 	logger.dependencies = [formatter.name];
 
-	register(logger);
-	register(config);
-	register(parser);
-	register(validator);
-	register(formatter);
+	register(logger, config, parser, validator, formatter);
 
 	await assert.rejects(load(), /cycle detected: @logger.* -> @logger.*/); // logger eventually depends on logger
 

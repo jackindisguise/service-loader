@@ -4,13 +4,30 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.REGISTERED_SERVICE_NAMES = exports.REGISTERED_SERVICES = exports.LOADED_SERVICE_NAMES = exports.LOADED_SERVICES = void 0;
+exports.configure = configure;
 exports.deregister = deregister;
 exports.load = load;
 exports.loadByName = loadByName;
 exports.loadByService = loadByService;
 exports.register = register;
 var _strict = _interopRequireDefault(require("node:assert/strict"));
+var _sw = _interopRequireDefault(require("sw"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+/**
+ * Stored config status.
+ */
+let CONFIG = {};
+/**
+ * Update config status.
+ * Only overwrites supplied keys.
+ * @param options
+ */
+function configure(options) {
+  CONFIG = {
+    ...CONFIG,
+    ...options
+  };
+}
 /**
  * An array of all registered Services.
  */
@@ -47,24 +64,26 @@ function serviceRegisteredByService(service) {
  * Register a Service and its name.
  * @param service
  */
-function register(service) {
-  (0, _strict.default)(!serviceRegisteredByName(service.name), `service name ${service.name} conflict`);
-  (0, _strict.default)(!serviceRegisteredByService(service), `service object @${service.name} already registered`);
-  //logger.info({ package: "service" }, `registered service @${service.name}`);
-  _REGISTERED_SERVICE_NAMES.set(service.name, service);
-  _REGISTERED_SERVICES.push(service);
+function register(...services) {
+  for (let service of services) {
+    (0, _strict.default)(!serviceRegisteredByName(service.name), `service name ${service.name} conflict`);
+    (0, _strict.default)(!serviceRegisteredByService(service), `service object @${service.name} already registered`);
+    _REGISTERED_SERVICE_NAMES.set(service.name, service);
+    _REGISTERED_SERVICES.push(service);
+  }
 }
 /**
  * De-register a Service and its name.
  * @param service
  */
-function deregister(service) {
-  (0, _strict.default)(!_serviceLoadedByService(service), `service object @${service.name} is loaded -- cannot deregister`);
-  const idx = _REGISTERED_SERVICES.indexOf(service);
-  (0, _strict.default)(idx === -1, `service object @${service.name} not registered`);
-  //logger.info({ package: PACKAGE }, `deregistered service @${service}`);
-  _REGISTERED_SERVICE_NAMES.delete(service.name);
-  _REGISTERED_SERVICES.splice(idx);
+function deregister(...services) {
+  for (let service of services) {
+    (0, _strict.default)(!_serviceLoadedByService(service), `service object @${service.name} is loaded -- cannot deregister`);
+    const idx = _REGISTERED_SERVICES.indexOf(service);
+    (0, _strict.default)(idx !== -1, `service object @${service.name} not registered`);
+    _REGISTERED_SERVICE_NAMES.delete(service.name);
+    _REGISTERED_SERVICES.splice(idx);
+  }
 }
 /**
  * An array of all loaded Services.
@@ -106,12 +125,11 @@ function _serviceLoadedByService(service) {
 async function loadByService(service) {
   if (_serviceLoadedByService(service)) return;
   (0, _strict.default)(serviceRegisteredByService(service), `service @${service.name} not registered`);
-  //logger.info({ package: PACKAGE }, `loading service @${service.name}`);
-  const start = Date.now();
+  if (CONFIG.beforeLoad) CONFIG.beforeLoad(service);
+  const timer = (0, _sw.default)();
   await service.loader();
-  const end = Date.now();
-  service.loadTime = end - start;
-  //logger.debug({ package: PACKAGE }, `loaded @${service.name} in ${service.loadTime}ms`);
+  service.loadTime = timer.stop();
+  if (CONFIG.afterLoad) CONFIG.afterLoad(service);
   _LOADED_SERVICES.push(service);
   _LOADED_SERVICE_NAMES.set(service.name, service);
 }
@@ -154,7 +172,10 @@ function topoSort(...services) {
     }
     if (loaded.has(node)) return;
     stack.add(node);
-    for (const dep of graph.get(node) || []) visit(dep); // visit dependencies before loading parent
+    for (const dep of graph.get(node) || []) {
+      if (!REGISTERED_SERVICE_NAMES.has(dep)) throw new Error(`@${node} has unregistered dependency '${node}'`);
+      visit(dep); // visit dependencies before loading parent
+    }
     stack.delete(node);
     loaded.add(node);
     result.push(node);
@@ -168,7 +189,6 @@ function topoSort(...services) {
  */
 async function load() {
   const sorted = topoSort(...REGISTERED_SERVICES);
-  // logger.debug({ package: "service" }, `toposorted service graph: ${sorted.map((s) => `@${s}`).join(", ")}`);
   for (let service of sorted) {
     await loadByName(service);
   }

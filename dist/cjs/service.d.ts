@@ -1,6 +1,21 @@
 export type ServiceName = string;
 export type ServiceLoader = () => Promise<void>;
 /**
+ * Insertion point for logging, if you have need for it.
+ */
+interface Config {
+    /** Called before a Service is loaded. */
+    beforeLoad?: (service: Service) => Promise<void>;
+    /** Called after a Service is loaded. */
+    afterLoad?: (service: Service) => Promise<void>;
+}
+/**
+ * Update config status.
+ * Only overwrites supplied keys.
+ * @param options
+ */
+export declare function configure(options: Partial<Config>): void;
+/**
  * Defines the shape of a Service package.
  */
 export interface Service {
@@ -26,12 +41,12 @@ export declare const REGISTERED_SERVICE_NAMES: ReadonlyMap<ServiceName, Service>
  * Register a Service and its name.
  * @param service
  */
-export declare function register(service: Service): void;
+export declare function register(...services: Service[]): void;
 /**
  * De-register a Service and its name.
  * @param service
  */
-export declare function deregister(service: Service): void;
+export declare function deregister(...services: Service[]): void;
 /**
  * Expose a readonly array of all loaded Services.
  */
@@ -56,4 +71,5 @@ export declare function loadByName(service: ServiceName): Promise<void>;
  * Loads all registered services.
  */
 export declare function load(): Promise<void>;
+export {};
 //# sourceMappingURL=service.d.ts.map
