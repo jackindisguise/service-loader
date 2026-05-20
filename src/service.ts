@@ -237,7 +237,7 @@ function topoSort(...services: Service[]): ServiceName[] {
 
 		for (const dep of graph.get(node) || []) {
 			if (!REGISTERED_SERVICE_NAMES.has(dep))
-				throw new Error(`@${node} has unregistered dependency '${node}'`);
+				throw new Error(`@${node} has unregistered dependency '${dep}'`);
 			visit(dep); // visit dependencies before loading parent
 		}
 

@@ -91,7 +91,7 @@ function topoSort(...services) {
     stack.add(node);
     for (const dep of graph.get(node) || []) {
       if (!REGISTERED_SERVICE_NAMES.has(dep))
-        throw new Error(`@${node} has unregistered dependency '${node}'`);
+        throw new Error(`@${node} has unregistered dependency '${dep}'`);
       visit(dep);
     }
     stack.delete(node);
