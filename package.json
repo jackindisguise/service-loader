@@ -4,12 +4,12 @@
 	"description": "",
 	"main": "./dist/service.js",
 	"module": "./dist/service.mjs",
-	"types": "./dist/esm/service.d.ts",
+	"types": "./dist/service.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/esm/service.d.ts",
-			"import": "./dist/esm/service.mjs",
-			"require": "./dist/cjs/service.js"
+			"types": "./dist/service.d.ts",
+			"import": "./dist/service.mjs",
+			"require": "./dist/service.js"
 		}
 	},
 	"scripts": {
