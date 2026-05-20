@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/jackindisguise/service-loader/compare/v1.3.0...v1.3.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* fixed npm package paths ([a03d14e](https://github.com/jackindisguise/service-loader/commit/a03d14eee0e7a554176d473457d4e95d022ec40f))
+
 ## [1.3.0](https://github.com/jackindisguise/service-loader/compare/v1.2.0...v1.3.0) (2026-05-20)
 
 
