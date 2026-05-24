@@ -14,12 +14,8 @@
 	},
 	"scripts": {
 		"clean": "npx rimraf -rf dist",
-		"build:esm": "tsc",
-		"build:cjs": "npx babel dist/esm --out-dir dist/cjs --plugins @babel/plugin-transform-modules-commonjs --copy-files",
-		"build": "npm run build:esm && npm run build:cjs",
 		"bundle": "npx tsup src/service.ts --format esm,cjs --dts",
-		"build:clean": "npm run clean && npm run build",
-		"test:clean": "npm run build:clean && node --test",
+		"test:clean": "npm run clean && npm run bundle && node --test",
 		"test": "node --test"
 	},
 	"keywords": [

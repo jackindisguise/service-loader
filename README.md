@@ -8,11 +8,11 @@ A small TypeScript library for defining services up front, registering them as a
 2. Register all services.
 3. Load all services.
 
-That is the intended usage pattern for this package. You declare the full service graph first, then register each service, then call `load()` once to initialize everything in dependency order.
+That is the intended usage pattern for this package. You declare the full service graph first, then register all services in one call, then call `load()` once to initialize everything in dependency order.
 
 ## Features
 
-- Register services by name
+- Register one or more services
 - Track registered and loaded services
 - Load a service by object or by name
 - Load all registered services in topological order
@@ -27,23 +27,24 @@ npm install
 
 ## Build
 
-This package first compiles the TypeScript source to ESM, then uses Babel to rewrite that output into CommonJS:
+This package uses `tsup` to bundle the TypeScript source into both ESM and CommonJS outputs, plus declaration files:
 
 ```bash
-npm run build
+npm run bundle
 ```
 
-Build outputs are written to:
+Build outputs are written to `dist/`:
 
-- `dist/esm`
-- `dist/cjs`
+- `dist/service.mjs`
+- `dist/service.js`
+- `dist/service.d.ts`
 
 ## API
 
 The package exports the following types and functions:
 
-- `register(service)`
-- `deregister(service)`
+- `register(...services)`
+- `deregister(...services)`
 - `loadByService(service)`
 - `loadByName(name)`
 - `load()`
@@ -56,9 +57,16 @@ The package exports the following types and functions:
 
 ```ts
 export interface Service {
+  // Unique name used to register, look up, and load the service.
   name: string;
+
+  // Names of services that must load before this one.
   dependencies?: string[];
+
+  // Async initialization function for the service.
   loader: () => Promise<void>;
+
+  // Set automatically after the service finishes loading.
   loadTime?: number;
 }
 ```
@@ -86,12 +94,8 @@ const api = {
   },
 };
 
-const services = [database, api];
-
-// 2. Register all services
-for (const service of services) {
-  register(service);
-}
+// 2. Register all services at once
+register(database, api);
 
 // 3. Load all services
 await load();
@@ -118,12 +122,8 @@ const api = {
   },
 };
 
-const services = [database, api];
-
-// 2. Register all services
-for (const service of services) {
-  register(service);
-}
+// 2. Register all services at once
+register(database, api);
 
 // 3. Load all services
 (async () => {
@@ -133,16 +133,12 @@ for (const service of services) {
 
 ## Behavior
 
+- `register()` accepts one or more services in a single call.
 - `register()` rejects duplicate service names and duplicate service objects.
+- `deregister()` accepts one or more services in a single call.
 - `loadByService()` and `loadByName()` are idempotent after a service has loaded.
 - `load()` topologically sorts all registered services before loading them.
 - Cycles in the dependency graph throw an error before loading starts.
-
-## Project Structure
-
-- `src/service.ts` contains the registry and loader implementation.
-- `tsconfig.esm.json` controls the ESM TypeScript emit.
-- `package.json` contains the Babel step that produces CommonJS output.
 
 ## License
 
