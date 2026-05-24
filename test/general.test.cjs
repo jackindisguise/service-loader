@@ -71,6 +71,27 @@ test("loadByName is idempotent after a service is loaded", async () => {
 	assert.equal(LOADED_SERVICE_NAMES.get(service.name), service);
 });
 
+test("load picks up services registered after an initial load", async () => {
+	const calls = [];
+	const database = createService(uniqueName("database"), calls);
+	const api = createService(uniqueName("api"), calls, [database.name]);
+
+	register(database);
+
+	await load();
+
+	const firstLoadCalls = [...calls];
+
+	register(api);
+
+	await load();
+
+	assert.deepEqual(firstLoadCalls, [database.name]);
+	assert.deepEqual(calls, [database.name, api.name]);
+	assert.equal(LOADED_SERVICE_NAMES.get(database.name), database);
+	assert.equal(LOADED_SERVICE_NAMES.get(api.name), api);
+});
+
 test("load loads dependencies before dependents", async () => {
 	const calls = [];
 	const database = createService(uniqueName("database"), calls);
