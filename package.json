@@ -1,6 +1,6 @@
 {
 	"name": "service-loader",
-	"version": "1.3.2",
+	"version": "1.4.0",
 	"description": "",
 	"main": "./dist/service.js",
 	"module": "./dist/service.mjs",
