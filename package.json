@@ -14,7 +14,7 @@
 	},
 	"scripts": {
 		"clean": "npx rimraf -rf dist",
-		"bundle": "npx tsup src/service.ts --format esm,cjs --dts",
+		"bundle": "npx tsup",
 		"test:clean": "npm run clean && npm run bundle && node --test",
 		"test": "node --test"
 	},

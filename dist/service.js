@@ -163,3 +163,4 @@ async function load() {
   loadByService,
   register
 });
+//# sourceMappingURL=service.js.map
